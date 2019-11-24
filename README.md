@@ -6,7 +6,7 @@ This package is used in multiple steps: defect prediction, prioritization and re
 
 1. Get the code:
     ```
-    git clone https://github.com/mostafamahdieh/DefectPredictionTCP.git
+    git clone https://github.com/mostafamahdieh/FaultPronenessBasedTCP.git
     ```
 2. Get the [Defects4J+M](https://github.com/khesoem/Defects4J-Plus-M) repository in the same main directory:
     ```
@@ -14,7 +14,7 @@ This package is used in multiple steps: defect prediction, prioritization and re
     ```
 3. Defect prediction: The defect prediction step can be executed using the bugprediction_runner.py script as follows. This script runs the bug prediction step for the specific versions of all projects.
     ```
-    cd DefectPredictionTCP/bugprediction
+    cd FaultPronenessBasedTCP/bugprediction
     python -u bugprediction_runner.py
     ```
 
