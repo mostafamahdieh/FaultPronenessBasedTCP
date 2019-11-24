@@ -13,18 +13,20 @@ This package is used in multiple steps: defect prediction, prioritization and re
     git clone https://github.com/khesoem/Defects4J-Plus-M.git -C WTP-data
     ```
 3. Defect prediction: The defect prediction step can be executed using the bugprediction_runner.py script as follows. This script runs the bug prediction step for the specific versions of all projects.
-    cd bugprediction
+    ```
+    cd DefectPredictionTCP/bugprediction
     python -u bugprediction_runner.py
+    ```
 
 4. Test case prioritization: The prioritization_runner.py script is used to execute the traditional and fault-proneness based TCP methods. The total and additional strategies are executed in both the traditional and fault-proneness based methods.
     ```
-    cd priortization
+    cd ../prioritization
     python -u prioritization_runner.py
     ```
 
 5. Aggregating the results: The results are aggregated using the aggregate_results.py script:
     ```
-    cd results
+    cd ../results
     python -u aggregate_results.py
     ```
 
