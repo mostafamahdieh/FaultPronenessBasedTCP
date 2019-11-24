@@ -4,16 +4,15 @@
 #get_ipython().run_line_magic('matplotlib', 'inline')
 import keras_bugprediction
 
-#projects = ['Math', 'Closure', 'Lang', 'Time', 'Chart']
-#lastVersions = [106, 133, 65, 27, 26]
-#fromVersion = [41, 41, 21, 11, 11]
-#toVersion = [50, 50, 33, 14, 13]
+projects = ['Math', 'Closure', 'Lang', 'Time', 'Chart']
+lastVersions = [106, 133, 65, 27, 26]
+fromVersion = [41, 41, 21, 11, 11]
+toVersion = [50, 50, 33, 14, 13]
 
-
-projects = ['Lang']
-lastVersions = [65]
-fromVersion = [34]
-toVersion = [50]
+#projects = ['Chart']
+#lastVersions = [26]
+#fromVersion = [1]
+#toVersion = [13]
 
 
 index = 0
