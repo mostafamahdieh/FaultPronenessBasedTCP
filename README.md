@@ -16,13 +16,13 @@ This package is used in multiple steps: defect prediction, prioritization and re
     cd bugprediction
     python -u bugprediction_runner.py
 
-4. Test case priortization: The prioritization_runner.py script is used to execute the traditional and fault-proneness based TCP methods. The total and additional strategies are executed in both the traditional and fault-proneness based methods.
+4. Test case prioritization: The prioritization_runner.py script is used to execute the traditional and fault-proneness based TCP methods. The total and additional strategies are executed in both the traditional and fault-proneness based methods.
     ```
     cd priortization
     python -u prioritization_runner.py
     ```
 
-5. Aggeragating the results: The results are aggregated using the aggregate_results.py script:
+5. Aggregating the results: The results are aggregated using the aggregate_results.py script:
     ```
     cd results
     python -u aggregate_results.py
