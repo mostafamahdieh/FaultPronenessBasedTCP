@@ -9,12 +9,26 @@ import pandas as pd
 from keras.layers import Dense, Input
 from keras.models import Model
 import keras.backend as K
+import os.path
+import zipfile
 
 def readData(projectName, versionNum):
 	dataPath = '..\\..\\WTP-data'
-	dataFileName='%s/%s/%d/Features.csv' % (dataPath, projectName, versionNum)
+	projectDataPath = '%s/%s/%d' % (dataPath, projectName, versionNum)
+	dataFileName='%s/Metrics.csv' % (projectDataPath)
+	zipFileName='%s/Metrics.zip' % (projectDataPath)
+	if (not os.path.isfile(dataFileName) and os.path.isfile(zipFileName)):
+		print("Unzipping ",zipFileName)
+		with zipfile.ZipFile(zipFileName, 'r') as zip_ref:
+			zip_ref.extractall(projectDataPath)	
 	# print('Reading data set '+dataFileName)
 	return pd.read_csv(dataFileName) 
+
+# def readData(projectName, versionNum):
+# 	dataPath = '..\\..\\..\\WTP-data'
+# 	dataFileName='%s/%s/%d/Features.csv' % (dataPath, projectName, versionNum)
+# 	# print('Reading data set '+dataFileName)
+# 	return pd.read_csv(dataFileName)
 
 def kerasBugPrediction(projectName, versionNum, lastVersion):
 	dataPath = '..\\..\\WTP-data'
@@ -24,10 +38,10 @@ def kerasBugPrediction(projectName, versionNum, lastVersion):
 			df0 = dfPrevVersion
 		else:
 			# print('Appending...')
-			df0 = df0.append(dfPrevVersion)
+			df0 = df0.append(dfPrevVersion,sort=False)
 
-	# remove 3 first columns (class and package names) and last columns (buggy values)
-	df = df0.iloc[:, 3:-3]
+	# remove 2 first columns (class and package names) and last columns (buggy values)
+	df = df0.iloc[:, 2:-3]
 
 	# applying log transformation for large-value features
 	criteria = df.max(axis=0)>100
@@ -81,7 +95,7 @@ def kerasBugPrediction(projectName, versionNum, lastVersion):
 
 	best_val_f1 = 0
 	patience = 0
-	input_x = Input(shape=(108,))
+	input_x = Input(shape=(104,))
 	hidden = Dense(300, activation='sigmoid')(input_x)
 	dropout = Dropout(0.5)(hidden)
 
@@ -111,7 +125,7 @@ def kerasBugPrediction(projectName, versionNum, lastVersion):
 
 	# Current version
 	dfCV0 = readData(projectName, versionNum)
-	dfCV = dfCV0.iloc[:, 3:-3]
+	dfCV = dfCV0.iloc[:, 2:-3]
 
 	dfCV[criteria.index[criteria]] = np.log(1+dfCV[criteria.index[criteria]].values)
 
@@ -126,7 +140,7 @@ def kerasBugPrediction(projectName, versionNum, lastVersion):
 	meanTpLabels = np.sum(np.dot(predictedLabels, trueLabels))/np.sum(trueLabels)
 	print('mean true positive lalels: ', meanTpLabels)
 
-	predictionResults = np.hstack([predictedLabels.reshape(-1,1),np.array(dfCV0.LongName).reshape(-1,1)])
+	predictionResults = np.hstack([predictedLabels.reshape(-1,1),np.array(dfCV0.ClassLongName).reshape(-1,1)])
 
 	outputFileName='%s/%s/%d/nn_bugprediction.csv' % (dataPath, projectName, versionNum)
 
