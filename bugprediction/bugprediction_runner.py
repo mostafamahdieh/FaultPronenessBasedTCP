@@ -5,13 +5,13 @@
 import keras_bugprediction
 import time
 
-projects = ['Math', 'Closure', 'Lang', 'Time', 'Chart']
-lastVersions = [106, 133, 65, 27, 26]
-fromVersion = [41, 41, 21, 11, 11]
-toVersion = [50, 50, 33, 14, 13]
+projects = ['Chart', 'Closure', 'Lang', 'Math', 'Time']
+fromVersion = [1, 1, 1, 1, 1]
+toVersion = [13, 50, 33, 50, 14]
+lastVersions = [26, 133, 65, 106, 27]
 
 
-file = open("../../WTP-data/bugprediction_exectime.txt","w")
+file = open("../../WTP-data/bugprediction_exectime.txt","a")
 for index, project in enumerate(projects):
 	print('*** Project: %s ***' % project)
 	lastVersion = lastVersions[index]

@@ -12,8 +12,8 @@ def findRowIndex(data, value):
 def runPrioritization(project, versionNumber, alphaRangeNum):
 	dataPath = "../../WTP-data/%s/%d" % (project, versionNumber)
 
-#	bugpred = pd.read_csv('%s/nn_bugprediction.csv' % dataPath, delimiter=',')
-	bugpred = pd.read_csv('%s/bugpred.csv' % dataPath, delimiter=',')
+	bugpred = pd.read_csv('%s/nn_bugprediction.csv' % dataPath, delimiter=',')
+#	bugpred = pd.read_csv('%s/bugpred.csv' % dataPath, delimiter=',')
 	h5FileAddress = '%s/TestCoverage.h5' % dataPath
 
 	h5 = h5py.File(h5FileAddress)
