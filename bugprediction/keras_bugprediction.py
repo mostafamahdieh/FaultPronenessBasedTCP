@@ -13,7 +13,7 @@ import os.path
 import zipfile
 
 def readData(projectName, versionNum):
-	dataPath = '..\\..\\WTP-data'
+	dataPath = '../../WTP-data'
 	projectDataPath = '%s/%s/%d' % (dataPath, projectName, versionNum)
 	dataFileName='%s/Metrics.csv' % (projectDataPath)
 	zipFileName='%s/Metrics.zip' % (projectDataPath)
@@ -31,7 +31,7 @@ def readData(projectName, versionNum):
 # 	return pd.read_csv(dataFileName)
 
 def kerasBugPrediction(projectName, versionNum, lastVersion):
-	dataPath = '..\\..\\WTP-data'
+	dataPath = '../../WTP-data'
 	for prevVersionNum in range(versionNum+1, lastVersion+1):
 		dfPrevVersion = readData(projectName, prevVersionNum)
 		if prevVersionNum == versionNum+1:
@@ -90,7 +90,7 @@ def kerasBugPrediction(projectName, versionNum, lastVersion):
 		r = tp / (tp + fn + K.epsilon())
 
 		f1 = (1+beta**2) *p*r / ((beta**2)*p+r+K.epsilon())
-		f1 = tf.where(tf.is_nan(f1), tf.zeros_like(f1), f1)
+		f1 = tf.where(tf.math.is_nan(f1), tf.zeros_like(f1), f1)
 		return 1 - K.mean(f1)
 
 	best_val_f1 = 0
