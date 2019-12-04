@@ -86,12 +86,13 @@ def additionalPrioritization(coverage, unitProb):
 #   unitProb[additionalWeightedCoverage>0]=0
     if np.sum(unitProb-newUnitProb) > eps: # ignore changing additionalWeightedCoverage if unit probs have not changed
       additionalWeightedCoverage -= np.matmul(coverage,(unitProb-newUnitProb))
+    
+    unitProb = newUnitProb
 
   file = open("../../WTP-data/log.txt","a")
   file.write("%d,%d\n" % (equal, unequal))
   file.close()
 
-  unitProb = newUnitProb
 #    print("new UnitProb: ", newUnitProb, "\n")
   return additionalSumRanks
 
