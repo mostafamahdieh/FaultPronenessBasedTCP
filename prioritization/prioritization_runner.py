@@ -9,6 +9,9 @@ toVersion = [13, 50, 33, 50, 14]
 #fromVersion = [1]
 #toVersion = [13]
 
+sum_additional_elapsed_time = 0
+sum_total_elapsed_time = 0
+
 file = open("../../WTP-data/prioritization_exectime.txt","a")
 for index, project in enumerate(projects):
 	print('*** Project: %s ***' % project)
