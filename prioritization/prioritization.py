@@ -89,6 +89,9 @@ def runPrioritization(project, versionNumber, alphaRangeNum):
 		if (not b.empty):
 			unitBugPred[u] = b.bugpred
 
+	additional_elapsed_time = 0
+	total_elapsed_time = 0
+	
 	for alphaIndex in range(0, alphaRangeNum+1):
 		C_dp = float(alphaIndex)/float(alphaRangeNum)
 		print("** running for C_dp: ", C_dp)
