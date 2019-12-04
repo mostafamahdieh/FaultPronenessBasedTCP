@@ -1,5 +1,4 @@
 import prioritization as pr
-import time
 
 alphaRangeNum = 5
 projects = ['Chart', 'Closure', 'Lang', 'Math', 'Time']
@@ -15,11 +14,14 @@ for index, project in enumerate(projects):
 	print('*** Project: %s ***' % project)
 	for versionNumber in range(fromVersion[index], toVersion[index]+1):
 		print("* Version %d" % versionNumber)
-		start_time = time.time()
-		pr.runPrioritization(project, versionNumber, alphaRangeNum)
-		print()
-	elapsed_time = time.time() - start_time
-	print("elapsed_time: ", elapsed_time)
-	meanElapsedTime = elapsed_time/(toVersion[index]-fromVersion[index]+1)
-	file.write("%s,%f\n" % (project, meanElapsedTime))
+		additional_elapsed_time, total_elapsed_time = pr.runPrioritization(project, versionNumber, alphaRangeNum)
+		print("additional_elapsed_time: ", additional_elapsed_time)
+		print("total_elapsed_time: ", total_elapsed_time)
+		sum_additional_elapsed_time = sum_additional_elapsed_time + additional_elapsed_time
+		sum_total_elapsed_time = sum_total_elapsed_time + total_elapsed_time
+
+	mean_additional_elapsed_time = sum_additional_elapsed_time/(toVersion[index]-fromVersion[index]+1)
+	mean_total_elapsed_time = sum_total_elapsed_time/(toVersion[index]-fromVersion[index]+1)
+
+	file.write("%s,%f,%f\n" % (project, mean_additional_elapsed_time,mean_total_elapsed_time))
 file.close()

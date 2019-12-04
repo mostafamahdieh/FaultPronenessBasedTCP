@@ -49,6 +49,9 @@ def additionalPrioritization(coverage, unitProb):
   # for u in range(0,unitNum):
   #  additionalWeightedCoverage = unitProb[u]*coverage[:,u]
  
+  equal = 0
+  unequal = 0
+
   for rank in range(0,testNum):
     #    print(sprintf("additional (%d/%d)", rank, testNum))
     bestAdditionalWeightedCoverage = -1
@@ -64,6 +67,12 @@ def additionalPrioritization(coverage, unitProb):
         bestTest = candTest
         bestAdditionalWeightedCoverage = additionalWeightedCoverage[candTest]
         bestTotalWeightedCoverage = totalWeightedCoverage[candTest]
+
+      if (abs(additionalWeightedCoverage[candTest] - bestAdditionalWeightedCoverage) <= eps 
+           and abs(totalWeightedCoverage[candTest] - bestTotalWeightedCoverage) <= eps):
+        equal = equal+1
+      else:
+        unequal = unequal+1
  
 #    print("bestTest: ", bestTest)
 #    print("bestAdditionalWeightedCoverage: ", bestAdditionalWeightedCoverage)
@@ -78,8 +87,11 @@ def additionalPrioritization(coverage, unitProb):
     if np.sum(unitProb-newUnitProb) > eps: # ignore changing additionalWeightedCoverage if unit probs have not changed
       additionalWeightedCoverage -= np.matmul(coverage,(unitProb-newUnitProb))
 
+  file = open("../../WTP-data/log.txt","a")
+  file.write("%d,%d\n" % (equal, unequal))
+  file.close()
 
-    unitProb = newUnitProb
+  unitProb = newUnitProb
 #    print("new UnitProb: ", newUnitProb, "\n")
   return additionalSumRanks
 
