@@ -2,6 +2,8 @@ import numpy as np
 import pandas as pd
 import prioritization_core as pc
 import h5py
+import os.path
+import zipfile
 
 def findRowIndex(data, value):
 	for i in range(0, data.shape[0]):
@@ -10,11 +12,19 @@ def findRowIndex(data, value):
 	return -1
 
 def runPrioritization(project, versionNumber, alphaRangeNum):
-	dataPath = "../../WTP-data/%s/%d" % (project, versionNumber)
+	dataPath = '../../WTP-data'
+	projectDataPath = '%s/%s/%d' % (dataPath, project, versionNumber)
 
-	bugpred = pd.read_csv('%s/nn_bugprediction.csv' % dataPath, delimiter=',')
+	bugpred = pd.read_csv('%s/nn_bugprediction.csv' % projectDataPath, delimiter=',')
 #	bugpred = pd.read_csv('%s/bugpred.csv' % dataPath, delimiter=',')
-	h5FileAddress = '%s/TestCoverage.h5' % dataPath
+	h5FileAddress = '%s/TestCoverage.h5' % projectDataPath
+
+	zipFileName='%s/TestCoverage.zip' % (projectDataPath)
+
+	if (not os.path.isfile(h5FileAddress) and os.path.isfile(zipFileName)):
+		print("Unzipping ",zipFileName)
+		with zipfile.ZipFile(zipFileName, 'r') as zip_ref:
+			zip_ref.extractall(projectDataPath)	
 
 	h5 = h5py.File(h5FileAddress)
 
@@ -24,7 +34,7 @@ def runPrioritization(project, versionNumber, alphaRangeNum):
 	unitNum = unitNames.shape[0]
 	testNum = testNames.shape[0]
 
-	failedTestsFile = ("%s/FailedTests.txt" % dataPath)
+	failedTestsFile = ("%s/FailedTests.txt" % projectDataPath)
 
 	with open(failedTestsFile) as f:
 	    failedTests = f.readlines()
@@ -66,7 +76,7 @@ def runPrioritization(project, versionNumber, alphaRangeNum):
 	    for j in range(floor,top):
 	        coverage[r[j-floor]][c[j-floor]] = d[j-floor]
 
-	f = open('%s/apfd.csv' % dataPath, "w+")
+	f = open('%s/apfd.csv' % projectDataPath, "w+")
 	f.write("C_dp,additional,total,max,max_normal\n")
 
 	unitBugPred = np.zeros((unitNum, ))
