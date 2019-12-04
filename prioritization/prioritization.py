@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 import prioritization_core as pc
 import h5py
+import time
 
 def findRowIndex(data, value):
 	for i in range(0, data.shape[0]):
@@ -86,20 +87,29 @@ def runPrioritization(project, versionNumber, alphaRangeNum):
 		weightedUnitProb = (1-C_dp)*np.ones((unitNum, ))+C_dp*unitBugPred
 #		print("weightedUnitProb: ", weightedUnitProb)
 
+		additional_start_time = time.time()
 		weightedAdditionalPrioritization = pc.additionalPrioritization(coverage, weightedUnitProb)
+		additional_elapsed_time = additional_elapsed_time + time.time() - additional_start_time
+
 		waAPFD = pc.rankEvaluation(weightedAdditionalPrioritization, failedTestsIds)
 		print("weightedAdditionalPrioritization: ", waAPFD)
+
+		total_start_time = time.time()
 		weightedTotalPrioritization = pc.totalPrioritization(coverage, weightedUnitProb)
+		total_elapsed_time = total_elapsed_time + time.time() - total_start_time
+
 		wtAPFD = pc.rankEvaluation(weightedTotalPrioritization, failedTestsIds)
 		print("weightedTotalPrioritization: ", wtAPFD)
-		weightedMaxPrioritization = pc.maxPrioritization(coverage, weightedUnitProb)
-		wmAPFD = pc.rankEvaluation(weightedMaxPrioritization, failedTestsIds)
-		print("weightedMaxPrioritization: ", wmAPFD)
-		weightedMaxNormalizedPrioritization = pc.maxNormalizedPrioritization(coverage, weightedUnitProb)
-		wmnAPFD = pc.rankEvaluation(weightedMaxNormalizedPrioritization, failedTestsIds)
-		print("weightedMaxNormalizedPrioritization: ", wmnAPFD)
+		# weightedMaxPrioritization = pc.maxPrioritization(coverage, weightedUnitProb)
+		# wmAPFD = pc.rankEvaluation(weightedMaxPrioritization, failedTestsIds)
+		# print("weightedMaxPrioritization: ", wmAPFD)
+		# weightedMaxNormalizedPrioritization = pc.maxNormalizedPrioritization(coverage, weightedUnitProb)
+		# wmnAPFD = pc.rankEvaluation(weightedMaxNormalizedPrioritization, failedTestsIds)
+		# print("weightedMaxNormalizedPrioritization: ", wmnAPFD)
 
-		resultLine = "%f,%f,%f,%f,%f" % (C_dp, waAPFD, wtAPFD, wmAPFD, wmnAPFD)
+		resultLine = "%f,%f,%f,%f,%f" % (C_dp, waAPFD, wtAPFD, 0, 0)
 		f.write(resultLine+"\n")
 		print()
 	f.close()
+
+	return (additional_elapsed_time/alphaRangeNum,total_elapsed_time/alphaRangeNum)
