@@ -54,7 +54,7 @@ def runPrioritization(project, versionNumber, alphaRangeNum):
 
 	if (np.size(failedTestsIds)==0):
 		print("No Tests found in coverage values, skipping version")
-		return	
+		return (-1,-1)
 
 	print("failedTestsIds: ", failedTestsIds)
 	print("unitNum: ", unitNum)
@@ -91,7 +91,7 @@ def runPrioritization(project, versionNumber, alphaRangeNum):
 
 	additional_elapsed_time = 0
 	total_elapsed_time = 0
-	
+
 	for alphaIndex in range(0, alphaRangeNum+1):
 		C_dp = float(alphaIndex)/float(alphaRangeNum)
 		print("** running for C_dp: ", C_dp)
