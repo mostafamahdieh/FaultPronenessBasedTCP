@@ -11,6 +11,7 @@ from keras.models import Model
 import keras.backend as K
 import os.path
 import zipfile
+import time
 
 def readData(projectName, versionNum):
 	dataPath = '../../WTP-data'
@@ -127,12 +128,17 @@ def kerasBugPrediction(projectName, versionNum, lastVersion):
 	dfCV0 = readData(projectName, versionNum)
 	dfCV = dfCV0.iloc[:, 2:-3]
 
+	start_time = time.time()
+
 	dfCV[criteria.index[criteria]] = np.log(1+dfCV[criteria.index[criteria]].values)
 
 	dtCV = transform.transform(dfCV)
 	predictedLabels = np.asarray(model.predict(dtCV), dtype=np.float64)[:,0]
 	trueLabels = np.asarray(dfCV0.is_buggy, dtype=np.float64)
 
+	elapsed_time = time.time() - start_time
+
+	print("elapsed_time: ",elapsed_time)
 	# print(predictedLabels)
 	# print(trueLabels)
 	print('mean all prediction labels: ', np.mean(predictedLabels))
@@ -145,3 +151,4 @@ def kerasBugPrediction(projectName, versionNum, lastVersion):
 	outputFileName='%s/%s/%d/nn_bugprediction.csv' % (dataPath, projectName, versionNum)
 
 	np.savetxt(outputFileName, predictionResults, delimiter=",", header="bugpred,LongName", fmt='%s', comments='')
+	return elapsed_time
